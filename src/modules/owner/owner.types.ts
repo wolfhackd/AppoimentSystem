@@ -7,3 +7,8 @@ export interface CreateOwnerDTO {
     phone: string;
     password: string;
 }
+
+export interface LoginOwnerDTO {
+    emailOrCpf?: string;
+    password: string;
+}

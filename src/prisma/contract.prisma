@@ -1,36 +1,17 @@
 // use prisma-next
 
-// model User {
-//   id        Int      @id @default(autoincrement())
-//   email     String   @unique
-//   username  String?
-//   name      String?
-//   posts     Post[]
-//   createdAt TimestamptzString @default(now())
-//   updatedAt temporal.updatedAtString()
-// }
-
-// model Post {
-//   id        Int      @id @default(autoincrement())
-//   title     String
-//   content   String?
-//   author    User     @relation(fields: [authorId], references: [id])
-//   authorId  Int
-//   createdAt TimestamptzString @default(now())
-//   updatedAt temporal.updatedAtString()
-// }
-
-
 model Establishment{
   id          String    @id @default(uuid())
   name        String
-  owner       String
   email       String    @unique
   phone       String
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
   website     String?
   location    String?
+
+  ownerId     String
+  owner       Owner     @relation(fields: [ownerId], references: [id])
 }
 
 model Owner{
@@ -38,8 +19,10 @@ model Owner{
   name        String
   cpf         String    @unique
   phone       String
-  email       String
+  email       String    @unique
   password    String
+
+  establishments Establishment[]
 }
 
 model Service{
@@ -62,6 +45,6 @@ model Appointment{
  id           String    @id @default(uuid())
  data         DateTime //hora ta inclusa aqui
  status       Boolean @default(false)
- createdAt TimestamptzString @default(now())
+ createdAt    TimestamptzString @default(now())
 }
 

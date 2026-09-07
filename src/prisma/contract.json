@@ -178,7 +178,7 @@
                   "kind": "scalar"
                 }
               },
-              "owner": {
+              "ownerId": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -207,7 +207,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "owner": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "ownerId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Owner",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "createdAt": {
@@ -225,8 +241,8 @@
                 "name": {
                   "column": "name"
                 },
-                "owner": {
-                  "column": "owner"
+                "ownerId": {
+                  "column": "ownerId"
                 },
                 "phone": {
                   "column": "phone"
@@ -287,7 +303,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "establishments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "ownerId"
+                  ]
+                },
+                "to": {
+                  "model": "Establishment",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "cpf": {
@@ -497,7 +529,7 @@
                   "nativeType": "text",
                   "nullable": false
                 },
-                "owner": {
+                "ownerId": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
@@ -518,8 +550,34 @@
                   "nullable": true
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "ownerId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "establishment"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "owner"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "ownerId"
+                  ],
+                  "name": "establishment_ownerId_idx_e2d0c1ef",
+                  "prefix": "establishment_ownerId_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -578,6 +636,11 @@
                   "columns": [
                     "cpf"
                   ]
+                },
+                {
+                  "columns": [
+                    "email"
+                  ]
                 }
               ]
             },
@@ -624,7 +687,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8a1f26b3886ca439e6acc28efb4fa1e69ec3f87654519a39a7eaddd4f1eee012"
+    "storageHash": "1a0169e7f41da8969297d3c320f9883b39dbd0f720bbcfc5a76ca48e0a2e33d1"
   },
   "execution": {
     "executionHash": "2f74abf4d061a995dfa3156c302b014dc16ec275dca1b0a37d1d183e4b5944d7",

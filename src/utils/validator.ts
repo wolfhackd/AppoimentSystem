@@ -24,4 +24,11 @@ export class Validator {
         }
     }
 
+    static isCpf(value: unknown, field: string) {
+        const cpfRegex = /^\d{11}$/;
+        if (!cpfRegex.test(value as string)) {
+            throw new Error(`${field} deve ser um CPF válido`);
+        }
+    }
+
 }

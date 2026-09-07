@@ -10,10 +10,10 @@ export class OwnerRepository {
     }
 
     async getOwnerByEmail(email:string){
-        return this.db.orm.public.Owner.where({email})
+        return this.db.orm.public.Owner.where({email}).first();
     }
 
     async getOwnerByCpf(cpf:string){
-        return this.db.orm.public.Owner.where({cpf})
+        return this.db.orm.public.Owner.where({cpf}).first();
     }
 }

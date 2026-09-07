@@ -1,7 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateOwnerDTO } from "./owner.types";
+import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types";
 import {Validator} from "../../utils/validator";
 import type { OwnerService } from "./owner.service";
+import { TokenService } from "../../utils/tokenService";
 
 
 
@@ -29,6 +30,33 @@ export class OwnerController {
             return reply.status(201).send({message: "Owner created successfully!"})   
         } catch (error: any) {
             return reply.status(400).send({message: "Error creating owner!", error: error.message})
+        }
+    }
+
+    async login(request: FastifyRequest, reply: FastifyReply){
+
+        try{
+            const data = request.body as LoginOwnerDTO;
+            
+            Validator.required(data.emailOrCpf, "emailOrCpf");
+            Validator.required(data.password, "password");
+
+            Validator.isString(data.emailOrCpf, "emailOrCpf");
+
+            if(data.emailOrCpf?.includes("@")){
+                Validator.isEmail(data.emailOrCpf, "emailOrCpf");
+                const owner = await this.service.loginWithEmail(data);
+                const token = TokenService.generateToken(owner);
+                return reply.status(200).send({message: "Login successful!", token});
+            }else{
+                Validator.isCpf(data.emailOrCpf, "emailOrCpf");
+                const owner = await this.service.loginWithCpf(data);
+                const token = TokenService.generateToken(owner);
+                return reply.status(200).send({message: "Login successful!", token});
+            }
+
+        }catch (error: any) {
+            return reply.status(400).send({message: "Error logging in!", error: error.message})
         }
     }
 }

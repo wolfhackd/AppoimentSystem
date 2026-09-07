@@ -11,4 +11,5 @@ const controller = new OwnerController(service);
 export const ownerRoute = async (app: FastifyInstance) =>{
 
     app.post("/create", controller.createOwner.bind(controller));
+    app.post("/login", controller.login.bind(controller));
 }
