@@ -1,19 +1,24 @@
-
-import { db as DataBase } from "../../prisma/db";
+import { prisma } from "../../lib/prisma"
 import type { CreateOwnerDTO } from "./owner.types";
 
 export class OwnerRepository {
-    constructor(private db: typeof DataBase){}
+    constructor(private db: typeof prisma = prisma){}
 
     async createOwner(data: CreateOwnerDTO){
-        return this.db.orm.public.Owner.create(data);
+        return this.db.owner.create({
+            data:data
+        })
     }
 
     async getOwnerByEmail(email:string){
-        return this.db.orm.public.Owner.where({email}).first();
+        return this.db.owner.findFirst({where:{email}});
     }
 
     async getOwnerByCpf(cpf:string){
-        return this.db.orm.public.Owner.where({cpf}).first();
+        return this.db.owner.findFirst({where:{cpf}});
+    }
+
+    async getOwnerById(id:string){
+        return this.db.owner.findFirst({where:{id}});
     }
 }

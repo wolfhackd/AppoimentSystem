@@ -6,3 +6,5 @@ dist/
 .claude
 .cursor
 .devin
+.windsurf
+/generated/prisma

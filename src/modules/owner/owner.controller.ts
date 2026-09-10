@@ -3,6 +3,7 @@ import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types";
 import {Validator} from "../../utils/validator";
 import type { OwnerService } from "./owner.service";
 import { TokenService } from "../../utils/tokenService";
+import { CookieService } from "../../utils/cookieService";
 
 
 
@@ -47,12 +48,14 @@ export class OwnerController {
                 Validator.isEmail(data.emailOrCpf, "emailOrCpf");
                 const owner = await this.service.loginWithEmail(data);
                 const token = TokenService.generateToken(owner);
-                return reply.status(200).send({message: "Login successful!", token});
+                CookieService.setCookie(reply,token);
+                return reply.status(200).send({message: "Login successful!"});
             }else{
                 Validator.isCpf(data.emailOrCpf, "emailOrCpf");
                 const owner = await this.service.loginWithCpf(data);
                 const token = TokenService.generateToken(owner);
-                return reply.status(200).send({message: "Login successful!", token});
+                CookieService.setCookie(reply,token);
+                return reply.status(200).send({message: "Login successful!"});
             }
 
         }catch (error: any) {

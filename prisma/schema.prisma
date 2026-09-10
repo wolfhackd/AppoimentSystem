@@ -1,12 +1,19 @@
-// use prisma-next
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
 
 model Establishment{
   id          String    @id @default(uuid())
   name        String
   email       String    @unique
   phone       String
-  createdAt   TimestamptzString @default(now())
-  updatedAt   temporal.updatedAtString()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   website     String?
   location    String?
 
@@ -44,7 +51,6 @@ model Client{
 model Appointment{
  id           String    @id @default(uuid())
  data         DateTime //hora ta inclusa aqui
- status       Boolean @default(false)
- createdAt    TimestamptzString @default(now())
+ status       Boolean   @default(false)
+ createdAt    DateTime  @default(now())
 }
-

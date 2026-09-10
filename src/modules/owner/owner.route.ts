@@ -2,9 +2,8 @@ import type { FastifyInstance } from "fastify";
 import { OwnerController } from "./owner.controller";
 import { OwnerService } from "./owner.service";
 import { OwnerRepository } from "./owner.repository";
-import { db } from "../../prisma/db";
 
-const repository = new OwnerRepository(db);
+export const repository = new OwnerRepository();
 const service = new OwnerService(repository);
 const controller = new OwnerController(service);
 
