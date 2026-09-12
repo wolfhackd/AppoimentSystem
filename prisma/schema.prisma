@@ -19,6 +19,8 @@ model Establishment{
 
   ownerId     String
   owner       Owner     @relation(fields: [ownerId], references: [id])
+
+  services Service[]
 }
 
 model Owner{
@@ -38,6 +40,9 @@ model Service{
   description String?
   price       Float
   duration    Int //duration in minutes
+
+  establishmentId String
+  establishment Establishment @relation(fields: [establishmentId], references: [id])
 }
 
 model Client{

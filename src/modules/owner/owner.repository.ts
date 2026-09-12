@@ -11,14 +11,14 @@ export class OwnerRepository {
     }
 
     async getOwnerByEmail(email:string){
-        return this.db.owner.findFirst({where:{email}});
+        return this.db.owner.findFirst({where:{email}, include:{establishments:true}});
     }
 
     async getOwnerByCpf(cpf:string){
-        return this.db.owner.findFirst({where:{cpf}});
+        return this.db.owner.findFirst({where:{cpf}, include:{establishments:true}});
     }
 
     async getOwnerById(id:string){
-        return this.db.owner.findFirst({where:{id}});
+        return this.db.owner.findFirst({where:{id}, include:{establishments:true}});
     }
 }

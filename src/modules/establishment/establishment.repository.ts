@@ -6,8 +6,6 @@ export class EstablishmentRepository{
     constructor(private db: typeof prisma = prisma){}
 
     async createEstablishment(data: CreateEstablishmentDTO){
-        console.log("dois");
-        console.log(data);
         return this.db.establishment.create({
             data:{
                 name: data.name,
