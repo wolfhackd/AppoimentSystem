@@ -1,11 +1,14 @@
 import type { OwnerRepository } from "../owner/owner.repository";
 import type { EstablishmentRepository } from "./establishment.repository";
-import type { CreateEstablishmentDTO } from "./establishment.types";
+import type { CreateEstablishmentDTO, RegisterBusinessHourDTO } from "./establishment.types";
 
 
 
 export class EstablishmentService {
-    constructor(private repository: EstablishmentRepository, private ownerRepository: OwnerRepository){}
+    constructor(
+        private repository: EstablishmentRepository, 
+        private ownerRepository: OwnerRepository,
+    ){}
 
     async createEstablishment(data:CreateEstablishmentDTO){
         const owner = await this.ownerRepository.getOwnerById(data.ownerId);
@@ -19,5 +22,44 @@ export class EstablishmentService {
         }
         
         return await this.repository.createEstablishment(data);
+    }
+
+    async getEstablishmentById(id: string){
+        return await this.repository.getEstablishmentById(id);
+    }
+
+    async registerBusinessHour(data: RegisterBusinessHourDTO) {
+        //Verificar user
+        const user = await this.ownerRepository.getOwnerById(data.ownerId);
+        if(!user){
+            throw new Error("Owner not found!");
+        }
+
+        //Verificar se é dono do estabelecimento
+        if(!user.establishments.find(establishment => establishment.id === data.establishmentId)){
+            throw new Error("User is not the owner of the establishment!");
+        }
+
+        //registro de horário de funcionamento
+        //Validar dados de hora via regex
+        const timeRegex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+        if(!timeRegex.test(data.openingTime) || !timeRegex.test(data.closingTime)){
+            throw new Error("Invalid time format!");
+        }
+
+        //Validar se a hora de abertura é anterior a hora de fechamento
+        if(data.openingTime >= data.closingTime){
+            throw new Error("Opening time must be before closing time!");
+        }
+
+        const day = Number(data.dayOfWeek);
+
+        //Validar se o dia da semana está entre 1 e 7
+        if(day < 1 || day > 7){
+            throw new Error("Day of week must be between 1 and 7!");
+        }
+        
+        //salvar horário
+        return await this.repository.registerBusinessHour(data);
     }
 }

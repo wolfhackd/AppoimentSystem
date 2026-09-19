@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateEstablishmentDTO, CreateEstablishmentInputDTO } from "./establishment.types";
+import type { CreateEstablishmentDTO, CreateEstablishmentInputDTO, RegisterBusinessHourDTO, RegisterBusinessHourInputDTO } from "./establishment.types";
 import { Validator } from "../../utils/validator";
 import type { EstablishmentService } from "./establishment.service";
 
@@ -29,5 +29,29 @@ export class EstablishmentController {
             return reply.status(400).send({message: "Error creating establishment!", error: error.message})
         }
         
+    }
+
+    async registerBusinessHour(request: FastifyRequest, reply: FastifyReply){
+        try {
+            const data = request.body as RegisterBusinessHourInputDTO;
+
+            Validator.required(data.establishmentId, "Establishment id is required");
+            Validator.required(data.dayOfWeek, "Day of week is required");
+            Validator.required(data.openingTime, "Opening time is required");
+            Validator.required(data.closingTime, "Closing time is required");
+
+            //Verificar se ele é o dono do estabelecimento
+            //é interessante olhar se é possível registrar hórarios dentro dos que já tem
+
+            const ownerId = request.user.id as string;
+            Validator.required(ownerId, "User id is required");
+
+            const payload: RegisterBusinessHourDTO = {...data, ownerId};
+
+            return reply.status(201).send({message: "Business hour registered successfully!"})
+
+        } catch (error:any) {
+            return reply.status(400).send({message: "Error registering business hour!", error: error.message})
+        }
     }
 }

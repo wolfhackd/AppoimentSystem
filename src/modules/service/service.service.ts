@@ -23,4 +23,8 @@ export class ServiceService {
         await this.repository.createService(data);
     }
 
+    async getServiceById(id:string){
+        return this.repository.getServiceById(id);
+    }
+
 }

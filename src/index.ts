@@ -10,11 +10,13 @@ server.register(cookie);
 import { ownerRoute } from "./modules/owner/owner.route";
 import { establishmentRoute } from "./modules/establishment/establishment.route"
 import { serviceRouter } from './modules/service/service.route';
+import { appointmentRoute } from './modules/appointment/appointment.route';
 
 //Routes Registration
 server.register(ownerRoute, { prefix: '/owner'});
 server.register(establishmentRoute, { prefix: '/establishment'});
 server.register(serviceRouter, { prefix: '/service'});
+server.register(appointmentRoute, { prefix: '/appointment'});
 
 server.listen({ port: 3000}, (err, address)=>{
     if (err) {

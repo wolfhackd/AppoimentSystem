@@ -12,3 +12,18 @@ export interface CreateEstablishmentDTO {
     phone: string;
     ownerId: string;
 }
+
+export interface RegisterBusinessHourInputDTO {
+    establishmentId: string;
+    dayOfWeek: number;
+    openingTime: string;
+    closingTime: string;
+}
+
+export interface RegisterBusinessHourDTO {
+    establishmentId: string;
+    dayOfWeek: number;
+    openingTime: string;
+    closingTime: string;
+    ownerId: string;
+}

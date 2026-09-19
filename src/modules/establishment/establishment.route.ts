@@ -5,10 +5,11 @@ import { EstablishmentRepository } from "./establishment.repository";
 import {repository as ownerRepository} from "../owner/owner.route";
 import { authMiddleware } from "../../middleware/middleware";
 
-const repository = new EstablishmentRepository();
-const service = new EstablishmentService(repository,ownerRepository);
+export const repository = new EstablishmentRepository();
+export const service = new EstablishmentService(repository,ownerRepository);
 const controller = new EstablishmentController(service);
 
 export const establishmentRoute = async (app: FastifyInstance) => {
     app.post("/create",{preHandler: authMiddleware},controller.createEstablishment.bind(controller));
+    app.post("/register-hour",{preHandler: authMiddleware},controller.registerBusinessHour.bind(controller));
 }

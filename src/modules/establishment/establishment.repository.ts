@@ -1,4 +1,4 @@
-import type { CreateEstablishmentDTO } from "./establishment.types";
+import type { CreateEstablishmentDTO, RegisterBusinessHourDTO } from "./establishment.types";
 import { prisma } from "../../lib/prisma"
 
 
@@ -26,5 +26,24 @@ export class EstablishmentRepository{
                 email
             }
         });
+    }
+
+    async getEstablishmentById(id: string){
+        return this.db.establishment.findUnique({
+            where:{
+                id
+            }
+        })
+    }
+
+    async registerBusinessHour(data: RegisterBusinessHourDTO){
+        return this.db.businessHour.create({
+            data:{
+                openingTime: data.openingTime,
+                closingTime: data.closingTime,
+                dayOfWeek: data.dayOfWeek,
+                establishmentId: data.establishmentId,
+            }
+        })
     }
 } 

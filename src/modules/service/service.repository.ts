@@ -29,4 +29,12 @@ export class ServiceRepository{
             }
         })
     }
+
+    async getServiceById(id:string){
+        return this.db.service.findUnique({
+            where:{
+                id,
+            }
+        })
+    }
 }

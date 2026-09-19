@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Establishment{
+model Establishment {
   id          String    @id @default(uuid())
   name        String
   email       String    @unique
@@ -21,9 +21,23 @@ model Establishment{
   owner       Owner     @relation(fields: [ownerId], references: [id])
 
   services Service[]
+  businessHours BusinessHour[]
 }
 
-model Owner{
+
+//dessa forma consigo controlar os horários de funcionamento do estabelecimento
+model BusinessHour {
+  id             String @id @default(uuid())
+
+  establishmentId String
+  establishment Establishment @relation(fields: [establishmentId], references: [id])
+
+  dayOfWeek      Int
+  openingTime    String
+  closingTime    String
+}
+
+model Owner {
   id          String    @id @default(uuid())
   name        String
   cpf         String    @unique
@@ -34,7 +48,7 @@ model Owner{
   establishments Establishment[]
 }
 
-model Service{
+model Service {
   id          String    @id @default(uuid())
   name        String
   description String?
@@ -45,7 +59,7 @@ model Service{
   establishment Establishment @relation(fields: [establishmentId], references: [id])
 }
 
-model Client{
+model Client {
   id          String    @id @default(uuid())
   name        String
   cpf         String    @unique
@@ -53,9 +67,9 @@ model Client{
   email       String
 }
 
-model Appointment{
+model Appointment {
  id           String    @id @default(uuid())
- data         DateTime //hora ta inclusa aqui
+ data         DateTime  //hora ta inclusa aqui
  status       Boolean   @default(false)
  createdAt    DateTime  @default(now())
 }
