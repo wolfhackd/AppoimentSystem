@@ -32,6 +32,10 @@ export class EstablishmentRepository{
         return this.db.establishment.findUnique({
             where:{
                 id
+            },
+            include:{
+                services: true,
+                businessHours: true,
             }
         })
     }

@@ -1,10 +1,13 @@
 import fastify from 'fastify';
 import cookie from '@fastify/cookie';
+import { serializerCompiler, validatorCompiler } from "@fastify/type-provider-zod";
 
 
 //Configuration
 const server = fastify();
 server.register(cookie);
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
 
 //Routes imports
 import { ownerRoute } from "./modules/owner/owner.route";

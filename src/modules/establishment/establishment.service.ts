@@ -62,4 +62,9 @@ export class EstablishmentService {
         //salvar horário
         return await this.repository.registerBusinessHour(data);
     }
+
+    async isOpenInDay(day: number,establishmentId: string){
+        const establishment = await this.repository.getEstablishmentById(establishmentId);
+        return establishment!.businessHours.filter(days => days.dayOfWeek === day);
+    }
 }
