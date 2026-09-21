@@ -1,6 +1,6 @@
 import type { OwnerRepository } from "../owner/owner.repository";
 import type { EstablishmentRepository } from "./establishment.repository";
-import type { CreateEstablishmentDTO, RegisterBusinessHourDTO } from "./establishment.types";
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
 
 
 
@@ -10,7 +10,7 @@ export class EstablishmentService {
         private ownerRepository: OwnerRepository,
     ){}
 
-    async createEstablishment(data:CreateEstablishmentDTO){
+    async createEstablishment(data:CreateEstablishmentWithOwnerIdInputDTO){
         const owner = await this.ownerRepository.getOwnerById(data.ownerId);
         if(!owner){
             throw new Error("Owner not found!");
@@ -28,7 +28,7 @@ export class EstablishmentService {
         return await this.repository.getEstablishmentById(id);
     }
 
-    async registerBusinessHour(data: RegisterBusinessHourDTO) {
+    async registerBusinessHour(data: RegisterBusinessHourWithOwnerIdInputDTO) {
         //Verificar user
         const user = await this.ownerRepository.getOwnerById(data.ownerId);
         if(!user){

@@ -56,6 +56,9 @@ export class AppointmentService{
         }
         
         console.log('Appointment time is within operating hours!');
+
+        //terminar
+        
         return 
     }
 

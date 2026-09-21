@@ -3,11 +3,12 @@ import { ServiceController } from "./service.controller";
 import { ServiceService } from "./service.service";
 import { ServiceRepository } from "./service.repository";
 import { authMiddleware } from "../../middleware/middleware";
+import { CreateServiceInputSchema } from "./service.types";
 
 const serviceRepository = new ServiceRepository()
 export const service = new ServiceService(serviceRepository)
 const controller = new ServiceController(service)
 
 export const serviceRouter = (app: FastifyInstance) => {
-    app.post('/create',{preHandler:authMiddleware},controller.createService.bind(controller))
+    app.post('/create',{preHandler:authMiddleware, schema:{body:CreateServiceInputSchema}},controller.createService.bind(controller))
 }

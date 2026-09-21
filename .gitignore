@@ -8,3 +8,4 @@ dist/
 .devin
 .windsurf
 /generated/prisma
+.vitest/

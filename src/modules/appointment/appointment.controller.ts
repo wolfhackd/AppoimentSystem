@@ -1,7 +1,6 @@
 import type { FastifyReply } from "fastify/types/reply";
 import type { FastifyRequest } from "fastify/types/request";
 import type { createAppointmentInput } from "./appointment.types";
-import { Validator } from "../../utils/validator";
 import type { AppointmentService } from "./appointment.service";
 
 

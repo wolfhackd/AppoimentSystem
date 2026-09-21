@@ -1,6 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types";
-import {Validator} from "../../utils/validator";
 import type { OwnerService } from "./owner.service";
 import { TokenService } from "../../utils/tokenService";
 import { CookieService } from "../../utils/cookieService";
@@ -15,17 +14,6 @@ export class OwnerController {
 
             const data = request.body as CreateOwnerDTO;
             
-            Validator.required(data.email, "email");
-            Validator.required(data.cpf, "cpf");
-            Validator.required(data.name, "name");
-            Validator.required(data.phone, "phone");
-            Validator.required(data.password, "password");
-            
-            Validator.isEmail(data.email, "email");
-            Validator.isString(data.cpf, "cpf");
-            Validator.isString(data.name, "name");
-            Validator.isString(data.phone, "phone");
-            Validator.isString(data.password, "password");
             await this.service.createOwner(data);
             
             return reply.status(201).send({message: "Owner created successfully!"})   
@@ -39,19 +27,13 @@ export class OwnerController {
         try{
             const data = request.body as LoginOwnerDTO;
             
-            Validator.required(data.emailOrCpf, "emailOrCpf");
-            Validator.required(data.password, "password");
-
-            Validator.isString(data.emailOrCpf, "emailOrCpf");
-
+           
             if(data.emailOrCpf?.includes("@")){
-                Validator.isEmail(data.emailOrCpf, "emailOrCpf");
                 const owner = await this.service.loginWithEmail(data);
                 const token = TokenService.generateToken(owner);
                 CookieService.setCookie(reply,token);
                 return reply.status(200).send({message: "Login successful!"});
             }else{
-                Validator.isCpf(data.emailOrCpf, "emailOrCpf");
                 const owner = await this.service.loginWithCpf(data);
                 const token = TokenService.generateToken(owner);
                 CookieService.setCookie(reply,token);

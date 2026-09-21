@@ -1,7 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateEstablishmentDTO, CreateEstablishmentInputDTO, RegisterBusinessHourDTO, RegisterBusinessHourInputDTO } from "./establishment.types";
-import { Validator } from "../../utils/validator";
 import type { EstablishmentService } from "./establishment.service";
+import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
 
 
 
@@ -14,14 +13,9 @@ export class EstablishmentController {
 
             const data = request.body as CreateEstablishmentInputDTO;
             
-            Validator.required(data.email, "Email is required");
-            Validator.required(data.phone, "Phone is required");
-            Validator.required(data.name, "Name is required");
-
             const ownerId = request.user.id as string;
-            Validator.required(ownerId, "User id is required");
 
-            const payload: CreateEstablishmentDTO = {...data, ownerId};
+            const payload: CreateEstablishmentWithOwnerIdInputDTO = {...data, ownerId};
             const newEstablishment = await this.service.createEstablishment(payload);
             return reply.status(201).send({message: newEstablishment.name + " Establishment created successfully!"})
 
@@ -35,19 +29,14 @@ export class EstablishmentController {
         try {
             const data = request.body as RegisterBusinessHourInputDTO;
 
-            Validator.required(data.establishmentId, "Establishment id is required");
-            Validator.required(data.dayOfWeek, "Day of week is required");
-            Validator.required(data.openingTime, "Opening time is required");
-            Validator.required(data.closingTime, "Closing time is required");
-
             //Verificar se ele é o dono do estabelecimento
             //é interessante olhar se é possível registrar hórarios dentro dos que já tem
 
             const ownerId = request.user.id as string;
-            Validator.required(ownerId, "User id is required");
 
-            const payload: RegisterBusinessHourDTO = {...data, ownerId};
+            const payload: RegisterBusinessHourWithOwnerIdInputDTO = {...data, ownerId};
 
+            await this.service.registerBusinessHour(payload);
             return reply.status(201).send({message: "Business hour registered successfully!"})
 
         } catch (error:any) {

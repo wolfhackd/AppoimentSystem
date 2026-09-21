@@ -1,6 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateServiceDTO, CreateServiceInputDTO } from "./service.types";
-import { Validator } from "../../utils/validator";
+import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO } from "./service.types";
 import type { ServiceService } from "./service.service";
 
 
@@ -10,22 +9,13 @@ export class ServiceController{
     async createService(request: FastifyRequest, reply: FastifyReply){
         try{
             const data = request.body as CreateServiceInputDTO
-            Validator.required(data.name, "name");
-            Validator.required(data.description, "description");
-            Validator.required(data.price, "price");
-            Validator.required(data.duration, "duration");
-            Validator.required(data.establishId, "establishId");
-
-            Validator.isNumber(data.price, "price");
-            Validator.isNumber(data.duration, "duration");
 
             const ownerId = request.user.id as string;
-            Validator.required(ownerId, "ownerId");
 
             const payload = {
                 ...data,
                 ownerId: ownerId,
-            } as CreateServiceDTO;
+            } as CreateServiceInputWithOwnerIdDTO;
 
 
             await this.service.createService(payload);
