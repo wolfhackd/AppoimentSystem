@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest --watch",
+    "test:coverage": "vitest --coverage"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.5.0",
     "@types/pg": "^8.23.1",
+    "@vitest/coverage-v8": "^5.0.1",
     "prisma": "^7.10.0",
     "vitest": "^5.0.1"
   }
