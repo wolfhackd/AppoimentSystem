@@ -1,11 +1,11 @@
-import type { CreateEstablishmentDTO, RegisterBusinessHourDTO } from "./establishment.types";
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
 import { prisma } from "../../lib/prisma"
 
 
 export class EstablishmentRepository{
     constructor(private db: typeof prisma = prisma){}
 
-    async createEstablishment(data: CreateEstablishmentDTO){
+    async createEstablishment(data: CreateEstablishmentWithOwnerIdInputDTO){
         return this.db.establishment.create({
             data:{
                 name: data.name,
@@ -40,7 +40,7 @@ export class EstablishmentRepository{
         })
     }
 
-    async registerBusinessHour(data: RegisterBusinessHourDTO){
+    async registerBusinessHour(data: RegisterBusinessHourWithOwnerIdInputDTO){
         return this.db.businessHour.create({
             data:{
                 openingTime: data.openingTime,

@@ -13,5 +13,6 @@ export const ownerRoute = async (app: FastifyInstance) =>{
     app.post("/create",{
         schema:{body:CreateOwnerSchema}
     }, controller.createOwner.bind(controller));
+    
     app.post("/login",{schema:{body:LoginOwnerSchema}}, controller.login.bind(controller));
 }
