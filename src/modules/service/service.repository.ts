@@ -1,5 +1,5 @@
 import {prisma} from "../../lib/prisma";
-import type { CreateServiceDTO } from "./service.types";
+import type { CreateServiceInputDTO } from "./service.types";
 
 
 export class ServiceRepository{
@@ -14,7 +14,7 @@ export class ServiceRepository{
         })
     }
 
-    async createService(data: CreateServiceDTO){
+    async createService(data: CreateServiceInputDTO){
         return this.db.service.create({
             data:{
                 name:data.name,

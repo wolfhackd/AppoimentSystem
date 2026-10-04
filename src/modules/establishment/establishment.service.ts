@@ -55,7 +55,7 @@ export class EstablishmentService {
         const day = Number(data.dayOfWeek);
 
         //Validar se o dia da semana está entre 1 e 7
-        if(day < 1 || day > 7){
+        if(!Number.isInteger(day) || day < 1 || day > 7){
             throw new Error("Day of week must be between 1 and 7!");
         }
         

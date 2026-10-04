@@ -15,10 +15,6 @@ const establishmentFixture = (id: string) => ({
     location: null
 });
 
-
-
-
-
 describe('EstablishmentService',()=>{
     let service: EstablishmentService;
 
@@ -291,6 +287,29 @@ describe('EstablishmentService',()=>{
         const payload = {
             establishmentId: "establishment-id-123",
             dayOfWeek: 8,
+            openingTime: "09:00",
+            closingTime: "18:00",
+            ownerId: "owner-id-123"
+        };
+
+        mockOwnerRepository.getOwnerById.mockResolvedValue({
+            id: "owner-id-123",
+            name: "Owner Test",
+            cpf: "12345678900",
+            phone: "1234567890",
+            email: "owner@example.com",
+            password: "hashedpassword",
+            establishments: [establishmentFixture("establishment-id-123")]
+        });
+
+        await expect(service.registerBusinessHour(payload)).rejects.toThrow("Day of week must be between 1 and 7!");
+        expect(mockEstablishmentRepository.registerBusinessHour).not.toHaveBeenCalled();
+    })
+
+    it("should throw an error if the day of week is fractional", async ()=>{
+        const payload = {
+            establishmentId: "establishment-id-123",
+            dayOfWeek: 1.5,
             openingTime: "09:00",
             closingTime: "18:00",
             ownerId: "owner-id-123"
