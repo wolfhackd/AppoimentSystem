@@ -27,6 +27,7 @@ describe('EstablishmentService',()=>{
         createEstablishment: vi.fn(),
         getEstablishmentByEmail: vi.fn(),
         getEstablishmentById: vi.fn(),
+        updateEstablishment: vi.fn(),
         registerBusinessHour: vi.fn()
        } as unknown as Mocked<EstablishmentRepository>;
 
@@ -164,6 +165,74 @@ describe('EstablishmentService',()=>{
 
         await expect(service.getEstablishmentById("establishment-id-123")).resolves.toEqual(expectedEstablishment);
         expect(mockEstablishmentRepository.getEstablishmentById).toHaveBeenCalledWith("establishment-id-123");
+    })
+
+    it("should update establishment information when owner owns the establishment", async ()=>{
+        const payload = {
+            establishmentId: "establishment-id-123",
+            name: "Updated Establishment",
+            email: "updated@example.com",
+            phone: "987654321",
+            website: "https://example.com",
+            location: "Rua Teste, 123",
+            ownerId: "owner-id-123"
+        };
+
+        mockOwnerRepository.getOwnerById.mockResolvedValue({
+            id: "owner-id-123",
+            name: "Owner Test",
+            cpf: "12345678900",
+            phone: "1234567890",
+            email: "owner@example.com",
+            password: "hashedpassword",
+            establishments: [establishmentFixture("establishment-id-123")]
+        });
+
+        mockEstablishmentRepository.getEstablishmentById.mockResolvedValue({
+            ...establishmentFixture("establishment-id-123"),
+            email: "old@example.com",
+            services: [],
+            businessHours: []
+        } as any);
+
+        mockEstablishmentRepository.getEstablishmentByEmail.mockResolvedValue(null);
+
+        const updatedEstablishment = {
+            ...establishmentFixture("establishment-id-123"),
+            ...payload,
+        };
+
+        mockEstablishmentRepository.updateEstablishment.mockResolvedValue(updatedEstablishment);
+
+        await expect(service.updateEstablishment(payload)).resolves.toEqual(updatedEstablishment);
+        expect(mockEstablishmentRepository.updateEstablishment).toHaveBeenCalledWith("establishment-id-123", {
+            name: payload.name,
+            email: payload.email,
+            phone: payload.phone,
+            website: payload.website,
+            location: payload.location,
+        });
+    })
+
+    it("should throw an error if the owner does not own the establishment to update", async ()=>{
+        const payload = {
+            establishmentId: "establishment-id-123",
+            name: "Updated Establishment",
+            ownerId: "owner-id-123"
+        };
+
+        mockOwnerRepository.getOwnerById.mockResolvedValue({
+            id: "owner-id-123",
+            name: "Owner Test",
+            cpf: "12345678900",
+            phone: "1234567890",
+            email: "owner@example.com",
+            password: "hashedpassword",
+            establishments: [establishmentFixture("another-establishment-id")]
+        });
+
+        await expect(service.updateEstablishment(payload as any)).rejects.toThrow("User is not the owner of the establishment!");
+        expect(mockEstablishmentRepository.updateEstablishment).not.toHaveBeenCalled();
     })
 
     it("should register business hours when owner owns the establishment", async ()=>{

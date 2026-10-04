@@ -1,7 +1,6 @@
 import type { OwnerRepository } from "../owner/owner.repository";
 import type { EstablishmentRepository } from "./establishment.repository";
-import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
-
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
 
 
 export class EstablishmentService {
@@ -26,6 +25,58 @@ export class EstablishmentService {
 
     async getEstablishmentById(id: string){
         return await this.repository.getEstablishmentById(id);
+    }
+
+    async updateEstablishment(data: UpdateEstablishmentWithOwnerIdInputDTO) {
+        const owner = await this.ownerRepository.getOwnerById(data.ownerId);
+        if(!owner){
+            throw new Error("Owner not found!");
+        }
+
+        const isOwner = owner.establishments.some(establishment => establishment.id === data.establishmentId);
+        if(!isOwner){
+            throw new Error("User is not the owner of the establishment!");
+        }
+
+        const establishment = await this.repository.getEstablishmentById(data.establishmentId);
+        if(!establishment){
+            throw new Error("Establishment not found!");
+        }
+
+        const updateData: {
+            name?: string;
+            email?: string;
+            phone?: string;
+            website?: string | null;
+            location?: string | null;
+        } = Object.fromEntries(
+            Object.entries({
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                website: data.website,
+                location: data.location,
+            }).filter(([, value]) => value !== undefined)
+        ) as {
+            name?: string;
+            email?: string;
+            phone?: string;
+            website?: string | null;
+            location?: string | null;
+        };
+
+        if (data.email && data.email !== establishment.email) {
+            const existingEstablishment = await this.repository.getEstablishmentByEmail(data.email);
+            if(existingEstablishment && existingEstablishment.id !== data.establishmentId){
+                throw new Error("Establishment already exists!");
+            }
+        }
+
+        return await this.repository.updateEstablishment(data.establishmentId, updateData);
+    }
+
+    async editEstablishment(data: UpdateEstablishmentWithOwnerIdInputDTO) {
+        return this.updateEstablishment(data);
     }
 
     async registerBusinessHour(data: RegisterBusinessHourWithOwnerIdInputDTO) {

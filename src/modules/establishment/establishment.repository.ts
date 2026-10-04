@@ -1,4 +1,4 @@
-import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
 import { prisma } from "../../lib/prisma"
 
 
@@ -38,6 +38,22 @@ export class EstablishmentRepository{
                 businessHours: true,
             }
         })
+    }
+
+    async updateEstablishment(
+        id: string,
+        data: {
+            name?: string;
+            email?: string;
+            phone?: string;
+            website?: string | null;
+            location?: string | null;
+        }
+    ){
+        return this.db.establishment.update({
+            where: { id },
+            data,
+        });
     }
 
     async registerBusinessHour(data: RegisterBusinessHourWithOwnerIdInputDTO){

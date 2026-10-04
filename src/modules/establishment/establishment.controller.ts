@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { EstablishmentService } from "./establishment.service";
-import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO } from "./establishment.types";
+import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, GetEstablishmentByIdParamsDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
 
 
 
@@ -23,6 +23,40 @@ export class EstablishmentController {
             return reply.status(400).send({message: "Error creating establishment!", error: error.message})
         }
         
+    }
+
+    async getEstablishmentById(
+        request: FastifyRequest<{ Params: GetEstablishmentByIdParamsDTO }>,
+        reply: FastifyReply
+    ) {
+        const establishment = await this.service.getEstablishmentById(request.params.id);
+
+        if (!establishment) {
+            return reply.status(404).send({ message: "Establishment not found!" });
+        }
+
+        return reply.status(200).send({ establishment });
+    }
+
+    async updateEstablishment(request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const data = request.body as UpdateEstablishmentInputDTO;
+            const ownerId = request.user.id as string;
+
+            const payload: UpdateEstablishmentWithOwnerIdInputDTO = {...data, ownerId};
+            const updatedEstablishment = await this.service.updateEstablishment(payload);
+
+            return reply.status(200).send({
+                message: "Establishment updated successfully!",
+                establishment: updatedEstablishment,
+            });
+        } catch(error:any) {
+            return reply.status(400).send({ message: "Error updating establishment!", error: error.message });
+        }
+    }
+
+    async editEstablishment(request: FastifyRequest, reply: FastifyReply) {
+        return this.updateEstablishment(request, reply);
     }
 
     async registerBusinessHour(request: FastifyRequest, reply: FastifyReply){

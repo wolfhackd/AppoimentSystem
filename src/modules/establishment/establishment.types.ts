@@ -1,5 +1,10 @@
 import {z} from 'zod';
 
+export const GetEstablishmentByIdParamsSchema = z.object({
+    id: z.uuid("Establishment id is required"),
+});
+
+export type GetEstablishmentByIdParamsDTO = z.infer<typeof GetEstablishmentByIdParamsSchema>;
 
 export const CreateEstablishmentSchema = z.object({
     name: z.string("Name is required"),
@@ -39,3 +44,23 @@ export const RegisterBusinessHourWithOwnerIdInputSchema = z.object({
 })
 
 export type RegisterBusinessHourWithOwnerIdInputDTO = z.infer<typeof RegisterBusinessHourWithOwnerIdInputSchema>;
+
+export const UpdateEstablishmentSchema = z.object({
+    establishmentId: z.uuid("Establishment id is required"),
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+    phone: z.string().optional(),
+    website: z.string().nullable().optional(),
+    location: z.string().nullable().optional(),
+}).refine((data) => Object.entries(data).filter(([key]) => key !== "establishmentId").some(([, value]) => value !== undefined), {
+    message: "At least one field must be provided to update the establishment.",
+    path: ["name"],
+});
+
+export type UpdateEstablishmentInputDTO = z.infer<typeof UpdateEstablishmentSchema>;
+
+export const UpdateEstablishmentWithOwnerIdSchema = UpdateEstablishmentSchema.extend({
+    ownerId: z.uuid("Owner id is required"),
+});
+
+export type UpdateEstablishmentWithOwnerIdInputDTO = z.infer<typeof UpdateEstablishmentWithOwnerIdSchema>;
