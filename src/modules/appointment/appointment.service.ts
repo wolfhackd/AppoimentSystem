@@ -14,57 +14,60 @@ export class AppointmentService{
     ){}
 
     async create(data: createAppointmentInput){
-
-        //Olhar a existência do estabelecimento
-
         const establishment = await this.establishmentService.getEstablishmentById(data.establishmentId);
         if(!establishment){
             throw new Error('Establishment not found');
         }
 
-        //Olhar a existência do serviço
         const service = await this.serviceService.getServiceById(data.serviceId);
         if(!service){
             throw new Error('Service not found');
         }
 
-        // ---- Disponibilidade do horário ----
-        //Verificar se está aberto
+        if(service.establishmentId !== data.establishmentId){
+            throw new Error('Service does not belong to this establishment!');
+        }
+
         const openIntervals = await this.establishmentService.isOpenInDay(data.dayOfWeek,data.establishmentId);
         if(openIntervals.length === 0){
             throw new Error('Establishment is not open on this day!');
         }
 
-        //verifico se esta entre os horários abertos e verifico se esta livre
-
         const appointmentStart = timeToMinutes(data.hour);
         const serviceDuration = service.duration;
         const appointmentEnd = appointmentStart + serviceDuration;
 
-        // Usamos o método `.some()` do JavaScript para testar os turnos.
-        // Ele retornará 'true' se o agendamento couber inteiramente dentro de QUALQUER um dos turnos.
-        const isWithinOperatingHours = openIntervals.some(turno => {
-        const turnOpen = timeToMinutes(turno.openingTime);
-        const turnClose = timeToMinutes(turno.closingTime);
-
-        // O agendamento precisa começar depois que o turno abre 
-        // E terminar antes (ou exatamente quando) o turno fecha
-        return appointmentStart >= turnOpen && appointmentEnd <= turnClose;
+        const isWithinOperatingHours = openIntervals.some((interval) => {
+            const turnOpen = timeToMinutes(interval.openingTime);
+            const turnClose = timeToMinutes(interval.closingTime);
+            return appointmentStart >= turnOpen && appointmentEnd <= turnClose;
         });
+
         if (!isWithinOperatingHours) {
             throw new Error('Appointment time is outside of establishment operating hours for this day!');
         }
-        
-        console.log('Appointment time is within operating hours!');
 
-        //terminar
-        
-        return 
+        const appointmentDate = this.getNextOccurrence(data.dayOfWeek, data.hour);
+        return this.appointmentRepository.create(data, appointmentDate, serviceDuration);
     }
 
+    private getNextOccurrence(dayOfWeek: number, hour: string): Date {
+        const now = new Date();
+        const currentDayOfWeek = now.getUTCDay() || 7;
+        const daysUntilAppointment = (dayOfWeek - currentDayOfWeek + 7) % 7;
+        const [hours, minutes] = hour.split(':').map(Number);
+        const appointmentDate = new Date(Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate() + daysUntilAppointment,
+            hours,
+            minutes,
+        ));
 
+        if (appointmentDate <= now) {
+            appointmentDate.setUTCDate(appointmentDate.getUTCDate() + 7);
+        }
 
-    // async isAvailable(data){
-    //     return await this.appointmentRepository.isAvailable(data);
-    // }
+        return appointmentDate;
+    }
 }

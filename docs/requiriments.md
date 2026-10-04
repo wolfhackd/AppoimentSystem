@@ -40,7 +40,7 @@ Desenvolver um programa cuja função principal seja a agendar serviços para cl
 - RN03 -- Os clientes devem informar o serviço desejado para agendamento
 - RN04 -- Os clientes devem escolher um horário livre
 - RN05 -- Não posso agendar duas vezes no mesmo horário
-- RN06 -- Os clientes devem informar a data do serviço
+- RN06 -- A data do serviço deve ser calculada como a próxima ocorrência futura do dia da semana informado
 - RN07 -- O dono deve confirmar o agendamento antes de iniciar o serviço
 - RN08 -- Os clientes devem ser notificados do agendamento antes de iniciar o serviço
 - RN09 -- Os clientes podem visualizar seus agendamentos e serviços

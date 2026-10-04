@@ -1,6 +1,5 @@
-import type { OwnerRepository } from "../owner/owner.repository";
 import type { ServiceRepository } from "./service.repository";
-import type { CreateServiceDTO } from "./service.types";
+import type { CreateServiceInputWithOwnerIdDTO } from "./service.types";
 
 
 
@@ -8,7 +7,7 @@ import type { CreateServiceDTO } from "./service.types";
 export class ServiceService {
     constructor(private repository: ServiceRepository){}
 
-    async createService(data: CreateServiceDTO){
+    async createService(data: CreateServiceInputWithOwnerIdDTO){
         const establishment = await this.repository.getEstablishmentByIdAndOwner(
                 data.establishId,
                 data.ownerId

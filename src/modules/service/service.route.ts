@@ -11,4 +11,4 @@ const controller = new ServiceController(service)
 
 export const serviceRouter = (app: FastifyInstance) => {
     app.post('/create',{preHandler:authMiddleware, schema:{body:CreateServiceInputSchema}},controller.createService.bind(controller))
-}
+} 
