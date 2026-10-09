@@ -55,3 +55,15 @@ export const UpdateServiceWithOwnerIdSchema = z.object({
 })
 
 export type UpdateServiceWithOwnerIdDTO = z.infer<typeof UpdateServiceWithOwnerIdSchema>
+
+export const DeleteServiceSchema = z.object({
+    serviceId: z.uuid("Service id is required"),
+})
+
+export type DeleteServiceInputDTO = z.infer<typeof DeleteServiceSchema>
+
+export const DeleteServiceWithOwnerIdSchema = DeleteServiceSchema.extend({
+    ownerId: z.uuid("Owner id is required"),
+})
+
+export type DeleteServiceWithOwnerIdDTO = z.infer<typeof DeleteServiceWithOwnerIdSchema>

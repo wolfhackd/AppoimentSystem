@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO, UpdateServiceInputDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
+import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO, DeleteServiceInputDTO, DeleteServiceWithOwnerIdDTO, UpdateServiceInputDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
 import type { ServiceService } from "./service.service";
 
 
@@ -43,6 +43,20 @@ export class ServiceController{
         }catch(error: any){
             console.log(error);
             return reply.status(400).send({message: "Error to update service", error: error.message});
+        }
+    }
+
+    async deleteService(request: FastifyRequest, reply: FastifyReply){
+        try{
+            const data = request.body as DeleteServiceInputDTO;
+            const ownerId = request.user.id as string;
+            const payload: DeleteServiceWithOwnerIdDTO = {...data, ownerId};
+            await this.service.deleteService(payload);
+
+            return reply.status(200).send({message: "Service deleted successfully"});
+        }catch(error: any){
+            console.log(error);
+            return reply.status(400).send({message: "Error to delete service", error: error.message});
         }
     }
 

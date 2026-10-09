@@ -49,4 +49,10 @@ export class ServiceRepository{
             data,
         })
     }
+
+    async deleteService(id: string){
+        return this.db.service.delete({
+            where: { id },
+        })
+    }
 }
