@@ -27,6 +27,7 @@ describe("AppointmentService", () => {
 
         appointmentRepository = {
             create: vi.fn(),
+            deleteByIdAndCpf: vi.fn(),
         } as unknown as Mocked<AppointmentRepository>;
         establishmentService = {
             getEstablishmentById: vi.fn().mockResolvedValue({ id: input.establishmentId }),
@@ -101,5 +102,20 @@ describe("AppointmentService", () => {
             "Appointment time is outside of establishment operating hours for this day!",
         );
         expect(appointmentRepository.create).not.toHaveBeenCalled();
+    });
+
+    it("deletes an appointment only when its ID and the client's CPF match", async () => {
+        const deleteInput = {
+            cpf: input.cpf,
+            appointmentId: "appointment-id",
+        };
+        appointmentRepository.deleteByIdAndCpf.mockResolvedValue({ count: 1 } as never);
+
+        await service.delete(deleteInput);
+
+        expect(appointmentRepository.deleteByIdAndCpf).toHaveBeenCalledWith(
+            deleteInput.appointmentId,
+            deleteInput.cpf,
+        );
     });
 });

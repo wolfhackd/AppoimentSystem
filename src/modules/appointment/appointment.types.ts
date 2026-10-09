@@ -14,4 +14,10 @@ export const createAppointmentSchema = z.object({
     dayOfWeek: z.number().int().min(1).max(7),
 })
 
-export type createAppointmentInput = z.infer<typeof createAppointmentSchema>;
+export const deleteAppointmentSchema = z.object({
+    cpf: z.string().min(11, "Invalid CPF length").max(14),
+    appointmentId: z.string().uuid("Appointment ID must be a valid UUID"),
+})
+
+export type CreateAppointmentInput = z.infer<typeof createAppointmentSchema>;
+export type DeleteAppointmentInput = z.infer<typeof deleteAppointmentSchema>;

@@ -21,14 +21,19 @@ describe("AppointmentRepository", () => {
                 create: vi.fn().mockResolvedValue({ id: "appointment-id" }),
             },
         };
+        const appointment = {
+            deleteMany: vi.fn().mockResolvedValue({ count: 1 }),
+        };
         const db = {
             $transaction: vi.fn((callback: (transaction: typeof tx) => Promise<unknown>) => callback(tx)),
+            appointment,
         } as unknown as typeof prisma;
 
         return {
             repository: new AppointmentRepository(db),
             db,
             tx,
+            appointment,
         };
     }
 
@@ -90,4 +95,27 @@ describe("AppointmentRepository", () => {
         ).rejects.toThrow("Appointment time is already booked!");
         expect(tx.appointment.create).not.toHaveBeenCalled();
     });
+
+    it("deletes only the appointment that belongs to the supplied client CPF", async () => {
+        const { repository, appointment } = setupRepository();
+
+        await repository.deleteByIdAndCpf("appointment-id", input.cpf);
+
+        expect(appointment.deleteMany).toHaveBeenCalledWith({
+            where: {
+                id: "appointment-id",
+                client: { is: { cpf: input.cpf } },
+            },
+        });
+    });
+
+    it("fails to delete when the appointment does not belong to the supplied client CPF", async () => {
+        const { repository, appointment } = setupRepository();
+        appointment.deleteMany.mockResolvedValue({ count: 0 });
+
+        await expect(
+            repository.deleteByIdAndCpf("appointment-id", input.cpf),
+        ).rejects.toThrow("Appointment not found for this client");
+    });
+
 });

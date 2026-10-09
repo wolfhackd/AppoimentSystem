@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import type { createAppointmentInput } from "./appointment.types";
+import type { CreateAppointmentInput } from "./appointment.types";
 
 
 export class AppointmentRepository{
@@ -8,7 +8,7 @@ export class AppointmentRepository{
     ){}
 
     async create(
-        data: createAppointmentInput,
+        data: CreateAppointmentInput,
         appointmentDate: Date,
         serviceDuration: number,
     ){
@@ -82,4 +82,22 @@ export class AppointmentRepository{
             isolationLevel: "Serializable",
         });
     }
+
+    async deleteByIdAndCpf(appointmentId: string, cpf: string) {
+        const result = await this.db.appointment.deleteMany({
+            where: {
+                id: appointmentId,
+                client: {
+                    is: { cpf },
+                },
+            },
+        });
+
+        if (result.count === 0) {
+            throw new Error("Appointment not found for this client");
+        }
+
+        return result;
+    }
+
 }

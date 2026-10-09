@@ -1,7 +1,7 @@
 import type { AppointmentRepository } from "./appointment.repository";
 import type { EstablishmentService } from "../establishment/establishment.service";
 import type { ServiceService } from "../service/service.service";
-import type { createAppointmentInput } from "./appointment.types";
+import type { CreateAppointmentInput, DeleteAppointmentInput } from "./appointment.types";
 import { timeToMinutes } from "../../utils/time";
 
 
@@ -13,7 +13,7 @@ export class AppointmentService{
         private readonly serviceService: ServiceService,
     ){}
 
-    async create(data: createAppointmentInput){
+    async create(data: CreateAppointmentInput){
         const establishment = await this.establishmentService.getEstablishmentById(data.establishmentId);
         if(!establishment){
             throw new Error('Establishment not found');
@@ -49,6 +49,10 @@ export class AppointmentService{
 
         const appointmentDate = this.getNextOccurrence(data.dayOfWeek, data.hour);
         return this.appointmentRepository.create(data, appointmentDate, serviceDuration);
+    }
+
+    async delete(data: DeleteAppointmentInput) {
+        return this.appointmentRepository.deleteByIdAndCpf(data.appointmentId, data.cpf);
     }
 
     private getNextOccurrence(dayOfWeek: number, hour: string): Date {
