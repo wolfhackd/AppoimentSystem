@@ -25,6 +25,7 @@ Respostas de erro de validação seguem o tratamento padrão do Fastify. Erros t
 | `POST` | `/service/create` | Sim | Cadastra um serviço em estabelecimento próprio. |
 | `PATCH` | `/service/edit` | Sim | Atualiza um ou mais campos de um serviço próprio. |
 | `POST` | `/appointment/create` | Não | Cria um agendamento após validar serviço, funcionamento e conflitos. |
+| `PATCH` | `/appointment/edit` | Não | Atualiza um agendamento do cliente, validando CPF, disponibilidade e dados do serviço/estabelecimento. |
 
 ## Responsáveis
 
@@ -169,6 +170,23 @@ O sistema valida que o estabelecimento e o serviço existem, que o serviço pert
 
 Os conflitos com outros agendamentos do estabelecimento são verificados por sobreposição de duração dentro de uma transação serializável. O cliente é criado ou associado pelo CPF. Sucesso: `200 OK`.
 
+### `PATCH /appointment/edit`
+
+Não exige autenticação. O cliente identifica o agendamento pelo `appointmentId` e pelo `cpf` cadastrado. Envie pelo menos um campo para alterar:
+
+```json
+{
+  "appointmentId": "UUID_DO_AGENDAMENTO",
+  "cpf": "12345678901",
+  "hour": "11:00",
+  "dayOfWeek": 2,
+  "phone": "+551188887777",
+  "email": "joao.novo@example.com"
+}
+```
+
+Campos aceitos: `hour`, `dayOfWeek`, `serviceId`, `establishmentId`, `name`, `phone`, `email`. Quando `hour` ou `dayOfWeek` são alterados, o sistema recalcula a próxima data válida e valida abertura do estabelecimento, pertencer do serviço ao estabelecimento e conflitos de horário. Sucesso: `200 OK`, com `message` e `appointment`.
+
 ## Comportamentos ainda não disponíveis
 
-Não existem rotas para listar, consultar individualmente, editar, confirmar, cancelar ou excluir agendamentos; listar clientes; consultar horários disponíveis; ou enviar notificações.
+Não existem rotas para listar, consultar individualmente, confirmar, cancelar, excluir agendamentos por outras regras de negócio, listar clientes, consultar horários disponíveis ou enviar notificações.

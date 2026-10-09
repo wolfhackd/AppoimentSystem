@@ -4,7 +4,7 @@ import { AppointmentService } from "./appointment.service";
 import { service as establishmentService  } from "./../establishment/establishment.route"
 import { service as serviceService  } from "./../service/service.route"
 import { AppointmentRepository } from "./appointment.repository";
-import { createAppointmentSchema, deleteAppointmentSchema } from "./appointment.types";
+import { createAppointmentSchema, deleteAppointmentSchema, updateAppointmentSchema } from "./appointment.types";
 
 const repository = new AppointmentRepository()
 const service = new AppointmentService(repository, establishmentService, serviceService)
@@ -16,6 +16,16 @@ export const appointmentRoute = (app: FastifyInstance) =>{
             body: createAppointmentSchema
         }
     }, controller.createAppointment.bind(controller));
+    app.patch('/edit', {
+        schema: {
+            body: updateAppointmentSchema,
+        },
+    }, controller.updateAppointment.bind(controller));
+    app.put('/edit', {
+        schema: {
+            body: updateAppointmentSchema,
+        },
+    }, controller.updateAppointment.bind(controller));
     app.delete('/delete', {
         schema: {
             body: deleteAppointmentSchema,

@@ -83,6 +83,74 @@ export class AppointmentRepository{
         });
     }
 
+    async getByIdAndCpf(appointmentId: string, cpf: string) {
+        return this.db.appointment.findFirst({
+            where: {
+                id: appointmentId,
+                client: {
+                    is: { cpf },
+                },
+            },
+            include: {
+                client: true,
+                service: true,
+                establishment: true,
+            },
+        });
+    }
+
+    async updateByIdAndCpf(
+        appointmentId: string,
+        cpf: string,
+        data: {
+            data?: Date;
+            serviceId?: string;
+            establishmentId?: string;
+            name?: string;
+            phone?: string;
+            email?: string;
+        },
+    ) {
+        const existingAppointment = await this.getByIdAndCpf(appointmentId, cpf);
+        if (!existingAppointment) {
+            throw new Error("Appointment not found for this client");
+        }
+
+        const updateData: {
+            data?: Date;
+            establishment?: { connect?: { id: string } };
+            service?: { connect?: { id: string } };
+            client?: { update?: Record<string, string> };
+        } = {};
+
+        if (data.data) {
+            updateData.data = data.data;
+        }
+
+        if (data.establishmentId) {
+            updateData.establishment = { connect: { id: data.establishmentId } };
+        }
+
+        if (data.serviceId) {
+            updateData.service = { connect: { id: data.serviceId } };
+        }
+
+        const clientFields = {
+            ...(data.name ? { name: data.name } : {}),
+            ...(data.phone ? { phone: data.phone } : {}),
+            ...(data.email ? { email: data.email } : {}),
+        };
+
+        if (Object.keys(clientFields).length > 0) {
+            updateData.client = { update: clientFields };
+        }
+
+        return this.db.appointment.update({
+            where: { id: appointmentId },
+            data: updateData,
+        });
+    }
+
     async deleteByIdAndCpf(appointmentId: string, cpf: string) {
         const result = await this.db.appointment.deleteMany({
             where: {
