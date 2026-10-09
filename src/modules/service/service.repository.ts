@@ -37,4 +37,16 @@ export class ServiceRepository{
             }
         })
     }
+
+    async updateService(id: string, data: {
+        name?: string;
+        description?: string | null;
+        price?: number;
+        duration?: number;
+    }){
+        return this.db.service.update({
+            where: { id },
+            data,
+        })
+    }
 }

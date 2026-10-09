@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO } from "./service.types";
+import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO, UpdateServiceInputDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
 import type { ServiceService } from "./service.service";
 
 
@@ -27,6 +27,23 @@ export class ServiceController{
         }
         
         
+    }
+
+    async updateService(request: FastifyRequest, reply: FastifyReply){
+        try{
+            const data = request.body as UpdateServiceInputDTO;
+            const ownerId = request.user.id as string;
+            const payload: UpdateServiceWithOwnerIdDTO = {...data, ownerId};
+            const updatedService = await this.service.updateService(payload);
+
+            return reply.status(200).send({
+                message: "Service updated successfully",
+                service: updatedService,
+            });
+        }catch(error: any){
+            console.log(error);
+            return reply.status(400).send({message: "Error to update service", error: error.message});
+        }
     }
 
 }

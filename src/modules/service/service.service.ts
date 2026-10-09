@@ -1,5 +1,5 @@
 import type { ServiceRepository } from "./service.repository";
-import type { CreateServiceInputWithOwnerIdDTO } from "./service.types";
+import type { CreateServiceInputWithOwnerIdDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
 
 
 
@@ -24,6 +24,32 @@ export class ServiceService {
 
     async getServiceById(id:string){
         return this.repository.getServiceById(id);
+    }
+
+    async updateService(data: UpdateServiceWithOwnerIdDTO){
+        const existingService = await this.repository.getServiceById(data.serviceId);
+        if(!existingService){
+            throw new Error("Service not found!");
+        }
+
+        const establishment = await this.repository.getEstablishmentByIdAndOwner(
+            existingService.establishmentId,
+            data.ownerId
+        );
+        if(!establishment){
+            throw new Error("User is not the owner of the establishment!");
+        }
+
+        const updateData = Object.fromEntries(
+            Object.entries({
+                name: data.name,
+                description: data.description,
+                price: data.price,
+                duration: data.duration,
+            }).filter(([, value]) => value !== undefined)
+        );
+
+        return this.repository.updateService(data.serviceId, updateData);
     }
 
 }

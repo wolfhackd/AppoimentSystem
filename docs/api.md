@@ -23,6 +23,7 @@ Respostas de erro de validação seguem o tratamento padrão do Fastify. Erros t
 | `PATCH` | `/establishment/edit` | Sim | Alias de atualização; usa a mesma validação e lógica do `PATCH`. |
 | `POST` | `/establishment/register-hour` | Sim | Registra um horário de funcionamento para estabelecimento próprio. |
 | `POST` | `/service/create` | Sim | Cadastra um serviço em estabelecimento próprio. |
+| `PATCH` | `/service/edit` | Sim | Atualiza um ou mais campos de um serviço próprio. |
 | `POST` | `/appointment/create` | Não | Cria um agendamento após validar serviço, funcionamento e conflitos. |
 
 ## Responsáveis
@@ -127,6 +128,21 @@ Requer sessão de responsável. O nome do campo esperado para o ID do estabeleci
 ```
 
 Todos os campos são obrigatórios. `name` e `description` não podem ser vazios; `price` e `duration` devem ser pelo menos `1`. A duração é expressa em minutos. O estabelecimento precisa pertencer ao responsável autenticado. Sucesso: `201 Created`.
+
+### `PATCH /service/edit`
+
+Requer sessão de responsável. Informe o serviço e pelo menos um campo para alterar:
+
+```json
+{
+  "serviceId": "UUID_DO_SERVICO",
+  "name": "Consulta inicial",
+  "price": 150,
+  "duration": 45
+}
+```
+
+Campos editáveis: `name`, `description`, `price` e `duration`; exceto pelo `serviceId`, são opcionais. `description` também aceita `null`; preço e duração devem ser pelo menos `1`, e duração deve ser um inteiro em minutos. O responsável autenticado precisa ser dono do estabelecimento associado ao serviço. Sucesso: `200 OK`, com `message` e `service`.
 
 ## Agendamentos
 
