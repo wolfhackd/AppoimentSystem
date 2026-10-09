@@ -4,7 +4,7 @@
 
 - Base URL local: `http://localhost:3000`
 - Formato: JSON
-- Prefixo global `/api`: não utilizado.
+- Prefixo global `/api`: não utilizado; cada módulo registra suas rotas com prefixos próprios (`/owner`, `/establishment`, `/service`, `/appointment`).
 - Validação dos corpos e parâmetros: Zod.
 - Autenticação: cookie `token` com JWT nas rotas indicadas como protegidas.
 
@@ -24,8 +24,11 @@ Respostas de erro de validação seguem o tratamento padrão do Fastify. Erros t
 | `POST` | `/establishment/register-hour` | Sim | Registra um horário de funcionamento para estabelecimento próprio. |
 | `POST` | `/service/create` | Sim | Cadastra um serviço em estabelecimento próprio. |
 | `PATCH` | `/service/edit` | Sim | Atualiza um ou mais campos de um serviço próprio. |
+| `DELETE` | `/service/delete` | Sim | Remove um serviço pertencente ao responsável autenticado. |
 | `POST` | `/appointment/create` | Não | Cria um agendamento após validar serviço, funcionamento e conflitos. |
 | `PATCH` | `/appointment/edit` | Não | Atualiza um agendamento do cliente, validando CPF, disponibilidade e dados do serviço/estabelecimento. |
+| `PUT` | `/appointment/edit` | Não | Alias de atualização; usa a mesma validação e lógica do `PATCH`. |
+| `DELETE` | `/appointment/delete` | Não | Remove um agendamento identificado por `appointmentId` e `cpf`. |
 
 ## Responsáveis
 
@@ -145,6 +148,18 @@ Requer sessão de responsável. Informe o serviço e pelo menos um campo para al
 
 Campos editáveis: `name`, `description`, `price` e `duration`; exceto pelo `serviceId`, são opcionais. `description` também aceita `null`; preço e duração devem ser pelo menos `1`, e duração deve ser um inteiro em minutos. O responsável autenticado precisa ser dono do estabelecimento associado ao serviço. Sucesso: `200 OK`, com `message` e `service`.
 
+### `DELETE /service/delete`
+
+Requer sessão de responsável. Delete o serviço associado ao responsável autenticado:
+
+```json
+{
+  "serviceId": "UUID_DO_SERVICO"
+}
+```
+
+O `serviceId` deve ser um UUID válido e o responsável precisa ser dono do estabelecimento associado ao serviço. Sucesso: `200 OK` com `message` informando a remoção.
+
 ## Agendamentos
 
 ### `POST /appointment/create`
@@ -170,7 +185,7 @@ O sistema valida que o estabelecimento e o serviço existem, que o serviço pert
 
 Os conflitos com outros agendamentos do estabelecimento são verificados por sobreposição de duração dentro de uma transação serializável. O cliente é criado ou associado pelo CPF. Sucesso: `200 OK`.
 
-### `PATCH /appointment/edit`
+### `PATCH /appointment/edit` e alias `PUT /appointment/edit`
 
 Não exige autenticação. O cliente identifica o agendamento pelo `appointmentId` e pelo `cpf` cadastrado. Envie pelo menos um campo para alterar:
 
@@ -187,6 +202,19 @@ Não exige autenticação. O cliente identifica o agendamento pelo `appointmentI
 
 Campos aceitos: `hour`, `dayOfWeek`, `serviceId`, `establishmentId`, `name`, `phone`, `email`. Quando `hour` ou `dayOfWeek` são alterados, o sistema recalcula a próxima data válida e valida abertura do estabelecimento, pertencer do serviço ao estabelecimento e conflitos de horário. Sucesso: `200 OK`, com `message` e `appointment`.
 
+### `DELETE /appointment/delete`
+
+Não exige autenticação. O cliente identifica o agendamento pelo `appointmentId` e pelo `cpf` cadastrado do cliente associado:
+
+```json
+{
+  "appointmentId": "UUID_DO_AGENDAMENTO",
+  "cpf": "12345678901"
+}
+```
+
+O sistema valida que o agendamento pertence ao CPF informado antes de removê-lo. Sucesso: `200 OK`, com `message` confirmando a exclusão.
+
 ## Comportamentos ainda não disponíveis
 
-Não existem rotas para listar, consultar individualmente, confirmar, cancelar, excluir agendamentos por outras regras de negócio, listar clientes, consultar horários disponíveis ou enviar notificações.
+Ainda não existem rotas para listar agendamentos, consultar individualmente um atendimento, confirmar ou cancelar por status, listar clientes, consultar horários disponíveis em endpoint específico ou enviar notificações. A API já implementa criação, edição e exclusão de agendamentos e serviços, porém a consulta e gestão avançada continuam fora do escopo atual.

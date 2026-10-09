@@ -10,8 +10,9 @@ API REST para cadastro de responsáveis e estabelecimentos, oferta de serviços 
 - Sessão de responsável por cookie HTTP-only com token JWT.
 - Cadastro, consulta e atualização de estabelecimentos.
 - Cadastro de horários de funcionamento por dia da semana.
-- Cadastro de serviços associados a um estabelecimento.
+- Cadastro, atualização e exclusão de serviços associados a um estabelecimento.
 - Criação pública de agendamentos com cadastro ou reaproveitamento do cliente pelo CPF.
+- Edição e exclusão de agendamentos por identificação do cliente e do agendamento.
 - Validação do horário de funcionamento, duração do serviço e conflitos com agendamentos existentes.
 
 Os endpoints e os formatos das requisições estão descritos em [docs/api.md](./docs/api.md). Requisitos do projeto e seu estado de implementação estão em [docs/requisitos.md](./docs/requisitos.md).
@@ -125,8 +126,9 @@ As relações completas e os campos estão em [prisma/schema.prisma](./prisma/sc
 ## Estado e limitações conhecidas
 
 - A API escuta na porta `3000`, definida diretamente no ponto de entrada.
-- Não há endpoint de consulta, alteração, confirmação ou exclusão de agendamentos.
-- O endpoint de disponibilidade não existe; a disponibilidade é validada durante a criação do agendamento.
+- Há endpoints de criação, edição e exclusão de agendamentos e serviços;
+  ainda não existem listagem pública/consulta individual de agendamentos, confirmação de atendimento ou fluxo de cancelamento por status.
+- O endpoint de disponibilidade não existe; a disponibilidade é validada durante a criação e atualização do agendamento.
 - Notificações a clientes não estão implementadas.
 - O cadastro de horários usa dias de `1` (segunda-feira) a `7` (domingo) e horário `HH:MM`.
 - Agendamentos são calculados para a próxima ocorrência futura do dia solicitado, usando UTC.

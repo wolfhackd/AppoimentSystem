@@ -22,10 +22,10 @@ Facilitar o agendamento de serviços e o gerenciamento de estabelecimentos, serv
 | ID | Requisito | Estado no backend |
 | --- | --- | --- |
 | RF01 | Agendar um horário de atendimento. | **Parcial** — cria agendamentos e valida funcionamento e conflitos; não há interface no repositório. |
-| RF02 | Gerenciar agendamentos. | **Parcial** — há criação; consulta, alteração e confirmação não estão disponíveis. |
+| RF02 | Gerenciar agendamentos. | **Parcial** — há criação, edição e exclusão por identidade do agendamento e do cliente; consulta individual, listagem e confirmação ainda não estão disponíveis. |
 | RF03 | Comunicar-se com os clientes. | **Não implementado** — não há integração ou envio de notificações. |
-| RF04 | Verificar horários disponíveis. | **Parcial** — a validação acontece ao criar um agendamento; não há endpoint para consultar disponibilidade. |
-| RF05 | Excluir agendamentos. | **Não implementado** — não há rota de cancelamento ou exclusão. |
+| RF04 | Verificar horários disponíveis. | **Parcial** — a validação acontece ao criar e atualizar um agendamento; não há endpoint para consultar disponibilidade. |
+| RF05 | Excluir agendamentos. | **Parcial** — há rota de exclusão com validação por `appointmentId` e `cpf`, mas ainda não há fluxo completo de cancelamento por status/cliente. |
 
 ## Requisitos não funcionais
 
