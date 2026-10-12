@@ -8,6 +8,7 @@ const server = fastify();
 server.register(cookie);
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
+const PORT = process.env.PORT || 3000;
 
 //Routes imports
 import { ownerRoute } from "./modules/owner/owner.route";
@@ -21,9 +22,9 @@ server.register(establishmentRoute, { prefix: '/establishment'});
 server.register(serviceRouter, { prefix: '/service'});
 server.register(appointmentRoute, { prefix: '/appointment'});
 
-server.listen({ port: 3000}, (err, address)=>{
+server.listen({ port: PORT as number }, (err, address)=>{
     if (err) {
         server.log.error(err);
     }
-    console.log(`Server listening at ${address} `)
+    console.log(`Server listening at ${address} on port ${PORT}`)
 })

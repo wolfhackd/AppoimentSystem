@@ -94,6 +94,13 @@ npm run dev
 
 O servidor inicia na porta `3000`. O ponto de entrada é `src/index.ts`; o processo de desenvolvimento reinicia ao detectar mudanças.
 
+Para compilar o backend para `dist/` e iniciar a versão compilada:
+
+```powershell
+npm run build
+npm start
+```
+
 ## Testes
 
 Execute a suíte uma vez:
@@ -132,6 +139,6 @@ As relações completas e os campos estão em [prisma/schema.prisma](./prisma/sc
 - Notificações a clientes não estão implementadas.
 - O cadastro de horários usa dias de `1` (segunda-feira) a `7` (domingo) e horário `HH:MM`.
 - Agendamentos são calculados para a próxima ocorrência futura do dia solicitado, usando UTC.
-- Não há interface de usuário, configuração de CORS, rota de health check ou script de build/start de produção no repositório.
+- Não há interface de usuário, configuração de CORS, rota de health check ou script para iniciar a versão compilada em produção.
 
 Consulte [docs/requisitos.md](./docs/requisitos.md) para o detalhamento dos requisitos planejados e atendidos.

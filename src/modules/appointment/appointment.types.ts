@@ -22,7 +22,6 @@ export const deleteAppointmentSchema = z.object({
 const updateAppointmentFieldsSchema = z.object({
     hour: z.string().regex(timeRegex,"Invalid time format (expected HH:MM)").optional(),
     name: z.string().min(3, "Name must be at least 3 characters long").optional(),
-    cpf: z.string().min(11, "Invalid CPF length").max(14).optional(),
     phone: z.string().min(10, "Invalid phone number").optional(),
     email: z.string().email("Invalid email format").optional(),
     dayOfWeek: z.number().int().min(1).max(7).optional(),
@@ -31,13 +30,13 @@ const updateAppointmentFieldsSchema = z.object({
 })
 
 const hasAppointmentUpdates = (data: {
-    hour?: string;
-    name?: string;
-    phone?: string;
-    email?: string;
-    dayOfWeek?: number;
-    establishmentId?: string;
-    serviceId?: string;
+    hour?: string | undefined;
+    name?: string | undefined;
+    phone?: string | undefined;
+    email?: string | undefined;
+    dayOfWeek?: number | undefined;
+    establishmentId?: string | undefined;
+    serviceId?: string | undefined;
 }) => [data.hour, data.name, data.phone, data.email, data.dayOfWeek, data.establishmentId, data.serviceId].some((value) => value !== undefined)
 
 export const updateAppointmentSchema = z.object({
