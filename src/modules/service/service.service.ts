@@ -1,5 +1,5 @@
-import type { ServiceRepository } from "./service.repository";
-import type { CreateServiceInputWithOwnerIdDTO, DeleteServiceWithOwnerIdDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
+import type { ServiceRepository } from "./service.repository.js";
+import type { CreateServiceInputWithOwnerIdDTO, DeleteServiceWithOwnerIdDTO, UpdateServiceWithOwnerIdDTO } from "./service.types.js";
 
 
 

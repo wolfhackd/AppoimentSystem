@@ -1,5 +1,5 @@
-import { prisma } from "../../lib/prisma"
-import type { CreateOwnerDTO } from "./owner.types";
+import { prisma } from "../../lib/prisma.js"
+import type { CreateOwnerDTO } from "./owner.types.js";
 
 export class OwnerRepository {
     constructor(private db: typeof prisma = prisma){}

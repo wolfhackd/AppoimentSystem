@@ -1,7 +1,7 @@
 import { vi, it, describe, expect, beforeEach, type Mocked } from 'vitest';
-import { OwnerService } from './owner.service';
-import type { OwnerRepository } from './owner.repository';
-import { PasswordHash } from '../../utils/passwordHash';
+import { OwnerService } from './owner.service.js';
+import type { OwnerRepository } from './owner.repository.js';
+import { PasswordHash } from '../../utils/passwordHash.js';
 
 describe('OwnerService',()=>{
     let service: OwnerService;

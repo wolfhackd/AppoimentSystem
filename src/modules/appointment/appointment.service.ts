@@ -1,8 +1,8 @@
-import type { AppointmentRepository } from "./appointment.repository";
-import type { EstablishmentService } from "../establishment/establishment.service";
-import type { ServiceService } from "../service/service.service";
-import type { CreateAppointmentInput, DeleteAppointmentInput, UpdateAppointmentInput } from "./appointment.types";
-import { timeToMinutes } from "../../utils/time";
+import type { AppointmentRepository } from "./appointment.repository.js";
+import type { EstablishmentService } from "../establishment/establishment.service.js";
+import type { ServiceService } from "../service/service.service.js";
+import type { CreateAppointmentInput, DeleteAppointmentInput, UpdateAppointmentInput } from "./appointment.types.js";
+import { timeToMinutes } from "../../utils/time.js";
 
 
 export class AppointmentService{

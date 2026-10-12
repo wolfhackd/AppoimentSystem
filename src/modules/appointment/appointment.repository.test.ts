@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { prisma } from "../../lib/prisma";
-import { AppointmentRepository } from "./appointment.repository";
+import { prisma } from "../../lib/prisma.js";
+import { AppointmentRepository } from "./appointment.repository.js";
 
 describe("AppointmentRepository", () => {
     const input = {

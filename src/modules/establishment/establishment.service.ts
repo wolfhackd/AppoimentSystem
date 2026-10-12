@@ -1,6 +1,6 @@
-import type { OwnerRepository } from "../owner/owner.repository";
-import type { EstablishmentRepository } from "./establishment.repository";
-import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
+import type { OwnerRepository } from "../owner/owner.repository.js";
+import type { EstablishmentRepository } from "./establishment.repository.js";
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types.js";
 
 
 export class EstablishmentService {

@@ -1,6 +1,6 @@
-import { PasswordHash } from "../../utils/passwordHash";
-import type { OwnerRepository } from "./owner.repository";
-import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types";
+import { PasswordHash } from "../../utils/passwordHash.js";
+import type { OwnerRepository } from "./owner.repository.js";
+import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types.js";
 import {} from "bcrypt-ts";
 
 

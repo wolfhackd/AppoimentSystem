@@ -1,7 +1,6 @@
-import type { FastifyReply } from "fastify/types/reply";
-import type { FastifyRequest } from "fastify/types/request";
-import type { CreateAppointmentInput, DeleteAppointmentInput, UpdateAppointmentInput } from "./appointment.types";
-import type { AppointmentService } from "./appointment.service";
+import type { FastifyReply, FastifyRequest } from "fastify";
+import type { CreateAppointmentInput, DeleteAppointmentInput, UpdateAppointmentInput } from "./appointment.types.js";
+import type { AppointmentService } from "./appointment.service.js";
 
 
 export class AppointmentController{

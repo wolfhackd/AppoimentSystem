@@ -1,7 +1,7 @@
 import { vi, it, describe, expect, beforeEach, type Mocked } from 'vitest';
-import { EstablishmentService } from './establishment.service';
-import type { EstablishmentRepository } from './establishment.repository';
-import type { OwnerRepository } from '../owner/owner.repository';
+import { EstablishmentService } from './establishment.service.js';
+import type { EstablishmentRepository } from './establishment.repository.js';
+import type { OwnerRepository } from '../owner/owner.repository.js';
 
 const establishmentFixture = (id: string) => ({
     id,

@@ -1,5 +1,5 @@
-import { prisma } from "../../lib/prisma";
-import type { CreateAppointmentInput } from "./appointment.types";
+import { prisma } from "../../lib/prisma.js";
+import type { CreateAppointmentInput } from "./appointment.types.js";
 
 
 export class AppointmentRepository{

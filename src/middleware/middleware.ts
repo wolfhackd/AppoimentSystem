@@ -1,6 +1,6 @@
 import type { FastifyRequest } from "fastify";
-import type { FastifyReply } from "fastify/types/reply";
-import { TokenService } from "../utils/tokenService";
+import type { FastifyReply } from "fastify";
+import { TokenService } from "../utils/tokenService.js";
 
 declare module "fastify" {
     interface FastifyRequest {

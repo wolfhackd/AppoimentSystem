@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { timeToMinutes } from "./time";
+import { timeToMinutes } from "./time.js";
 
 describe("timeToMinutes", () => {
   it("converts a valid HH:MM time to minutes", () => {

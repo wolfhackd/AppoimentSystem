@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { EstablishmentService } from "./establishment.service";
-import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, GetEstablishmentByIdParamsDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
+import type { EstablishmentService } from "./establishment.service.js";
+import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, GetEstablishmentByIdParamsDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types.js";
 
 
 

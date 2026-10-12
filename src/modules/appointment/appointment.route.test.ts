@@ -2,7 +2,7 @@ import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler } from "@fastify/type-provider-zod";
 import fastify, { type FastifyInstance } from "fastify";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { appointmentRoute } from "./appointment.route";
+import { appointmentRoute } from "./appointment.route.js";
 
 const repository = vi.hoisted(() => ({
     create: vi.fn(),

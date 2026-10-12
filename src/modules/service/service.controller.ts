@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO, DeleteServiceInputDTO, DeleteServiceWithOwnerIdDTO, UpdateServiceInputDTO, UpdateServiceWithOwnerIdDTO } from "./service.types";
-import type { ServiceService } from "./service.service";
+import type { CreateServiceInputDTO, CreateServiceInputWithOwnerIdDTO, DeleteServiceInputDTO, DeleteServiceWithOwnerIdDTO, UpdateServiceInputDTO, UpdateServiceWithOwnerIdDTO } from "./service.types.js";
+import type { ServiceService } from "./service.service.js";
 
 
 export class ServiceController{

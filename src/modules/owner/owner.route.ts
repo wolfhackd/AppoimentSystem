@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
-import { OwnerController } from "./owner.controller";
-import { OwnerService } from "./owner.service";
-import { OwnerRepository } from "./owner.repository";
-import { CreateOwnerSchema, LoginOwnerSchema } from "./owner.types";
+import { OwnerController } from "./owner.controller.js";
+import { OwnerService } from "./owner.service.js";
+import { OwnerRepository } from "./owner.repository.js";
+import { CreateOwnerSchema, LoginOwnerSchema } from "./owner.types.js";
 
 export const repository = new OwnerRepository();
 const service = new OwnerService(repository);

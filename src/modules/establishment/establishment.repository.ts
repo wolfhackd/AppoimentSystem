@@ -1,5 +1,5 @@
-import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types";
-import { prisma } from "../../lib/prisma"
+import type { CreateEstablishmentWithOwnerIdInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types.js";
+import { prisma } from "../../lib/prisma.js"
 
 
 export class EstablishmentRepository{

@@ -1,9 +1,9 @@
-import type { FastifyInstance } from "fastify/types/instance";
-import { ServiceController } from "./service.controller";
-import { ServiceService } from "./service.service";
-import { ServiceRepository } from "./service.repository";
-import { authMiddleware } from "../../middleware/middleware";
-import { CreateServiceInputSchema, DeleteServiceSchema, UpdateServiceSchema } from "./service.types";
+import type { FastifyInstance } from "fastify";
+import { ServiceController } from "./service.controller.js";
+import { ServiceService } from "./service.service.js";
+import { ServiceRepository } from "./service.repository.js";
+import { authMiddleware } from "../../middleware/middleware.js";
+import { CreateServiceInputSchema, DeleteServiceSchema, UpdateServiceSchema } from "./service.types.js";
 
 const serviceRepository = new ServiceRepository()
 export const service = new ServiceService(serviceRepository)

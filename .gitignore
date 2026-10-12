@@ -9,3 +9,9 @@ dist/
 .windsurf
 /generated/prisma
 .vitest/
+coverage
+node_modules
+dist
+.git
+.env
+coverage

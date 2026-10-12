@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types";
-import type { OwnerService } from "./owner.service";
-import { TokenService } from "../../utils/tokenService";
-import { CookieService } from "../../utils/cookieService";
+import type { CreateOwnerDTO, LoginOwnerDTO } from "./owner.types.js";
+import type { OwnerService } from "./owner.service.js";
+import { TokenService } from "../../utils/tokenService.js";
+import { CookieService } from "../../utils/cookieService.js";
 
 
 

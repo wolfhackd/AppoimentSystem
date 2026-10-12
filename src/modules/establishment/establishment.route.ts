@@ -1,10 +1,10 @@
 import type { FastifyInstance } from "fastify";
-import { EstablishmentController } from "./establishment.controller";
-import { EstablishmentService } from "./establishment.service";
-import { EstablishmentRepository } from "./establishment.repository";
-import {repository as ownerRepository} from "../owner/owner.route";
-import { authMiddleware } from "../../middleware/middleware";
-import { CreateEstablishmentSchema, GetEstablishmentByIdParamsSchema, RegisterBusinessHourSchema, UpdateEstablishmentSchema } from "./establishment.types";
+import { EstablishmentController } from "./establishment.controller.js";
+import { EstablishmentService } from "./establishment.service.js";
+import { EstablishmentRepository } from "./establishment.repository.js";
+import {repository as ownerRepository} from "../owner/owner.route.js";
+import { authMiddleware } from "../../middleware/middleware.js";
+import { CreateEstablishmentSchema, GetEstablishmentByIdParamsSchema, RegisterBusinessHourSchema, UpdateEstablishmentSchema } from "./establishment.types.js";
 
 export const repository = new EstablishmentRepository();
 export const service = new EstablishmentService(repository,ownerRepository);

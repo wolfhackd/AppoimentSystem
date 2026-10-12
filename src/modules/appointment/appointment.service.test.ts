@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type Mocked } from "vitest";
-import type { AppointmentRepository } from "./appointment.repository";
-import type { EstablishmentService } from "../establishment/establishment.service";
-import type { ServiceService } from "../service/service.service";
-import { AppointmentService } from "./appointment.service";
+import type { AppointmentRepository } from "./appointment.repository.js";
+import type { EstablishmentService } from "../establishment/establishment.service.js";
+import type { ServiceService } from "../service/service.service.js";
+import { AppointmentService } from "./appointment.service.js";
 
 describe("AppointmentService", () => {
     let service: AppointmentService;

@@ -2,8 +2,8 @@ import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler } from "@fastify/type-provider-zod";
 import fastify, { type FastifyInstance } from "fastify";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { TokenService } from "../../utils/tokenService";
-import { serviceRouter } from "./service.route";
+import { TokenService } from "../../utils/tokenService.js";
+import { serviceRouter } from "./service.route.js";
 
 const repository = vi.hoisted(() => ({
     getEstablishmentByIdAndOwner: vi.fn(),
