@@ -4,7 +4,7 @@ import { EstablishmentService } from "./establishment.service.js";
 import { EstablishmentRepository } from "./establishment.repository.js";
 import {repository as ownerRepository} from "../owner/owner.route.js";
 import { authMiddleware } from "../../middleware/middleware.js";
-import { CreateEstablishmentSchema, GetEstablishmentByIdParamsSchema, RegisterBusinessHourSchema, UpdateEstablishmentSchema } from "./establishment.types.js";
+import { CreateEstablishmentSchema, GetEstablishmentByIdParamsSchema, GetEstablishmentsQueryInput, RegisterBusinessHourSchema, UpdateEstablishmentSchema } from "./establishment.types.js";
 
 export const repository = new EstablishmentRepository();
 export const service = new EstablishmentService(repository,ownerRepository);
@@ -33,4 +33,9 @@ export const establishmentRoute = async (app: FastifyInstance) => {
             body: RegisterBusinessHourSchema
         }
     },controller.registerBusinessHour.bind(controller));
+    app.get("/", {
+        schema: {
+            querystring: GetEstablishmentsQueryInput
+        }
+    }, controller.getEstablishments.bind(controller))
 }

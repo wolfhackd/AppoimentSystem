@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { EstablishmentService } from "./establishment.service.js";
-import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, GetEstablishmentByIdParamsDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types.js";
+import type { CreateEstablishmentInputDTO, CreateEstablishmentWithOwnerIdInputDTO, GetEstablishmentByIdParamsDTO, GetEstablishmentsQueryInputDTO, RegisterBusinessHourInputDTO, RegisterBusinessHourWithOwnerIdInputDTO, UpdateEstablishmentInputDTO, UpdateEstablishmentWithOwnerIdInputDTO } from "./establishment.types.js";
 
 
 
@@ -75,6 +75,16 @@ export class EstablishmentController {
 
         } catch (error:any) {
             return reply.status(400).send({message: "Error registering business hour!", error: error.message})
+        }
+    }
+
+    async getEstablishments(request: FastifyRequest, reply: FastifyReply){
+        try{
+            const {page = 1, limit = 10} = request.query as GetEstablishmentsQueryInputDTO;
+            const establishments = await this.service.getEstablishments(Number(page), Number(limit));
+            return reply.status(200).send(establishments);
+        } catch(error:any){
+            return reply.status(400).send({message: "Error getting establishments!", error: error.message})
         }
     }
 }

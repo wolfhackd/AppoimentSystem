@@ -27,6 +27,16 @@ export class EstablishmentService {
         return await this.repository.getEstablishmentById(id);
     }
 
+    async getEstablishments(page: number, limit: number){
+        // const offset = (page - 1) * limit;
+        const offset = (page - 1) * limit;
+        const establishments = await this.repository.getEstablishments(offset, limit);
+        if(establishments.length === 0) {
+            throw new Error("No establishments found!");
+        }
+        return establishments;
+    }
+
     async updateEstablishment(data: UpdateEstablishmentWithOwnerIdInputDTO) {
         const owner = await this.ownerRepository.getOwnerById(data.ownerId);
         if(!owner){

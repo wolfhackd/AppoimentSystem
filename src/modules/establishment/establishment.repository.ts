@@ -40,6 +40,17 @@ export class EstablishmentRepository{
         })
     }
 
+    async getEstablishments(offset: number, limit: number){
+        return this.db.establishment.findMany({
+            take: limit,
+            skip: offset,
+            include:{
+                services: true,
+                businessHours: true,
+            }
+        })
+    }
+
     async updateEstablishment(
         id: string,
         data: {
