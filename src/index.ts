@@ -1,11 +1,15 @@
 import fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import { serializerCompiler, validatorCompiler } from "@fastify/type-provider-zod";
+import cors from '@fastify/cors';
 
 
 //Configuration
 const server = fastify();
 server.register(cookie);
+server.register(cors,{
+    origin: '*',
+});
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 const PORT = process.env.PORT || 3000;
